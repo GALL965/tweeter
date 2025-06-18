@@ -15,6 +15,7 @@ import { HomeComponent } from './home/home.component';
 import {FormsModule } from "@angular/forms";
 import { CommentsComponent } from './comments/comments.component';
 import { NewPostComponent } from './new-post/new-post.component';
+import { PerfilComponent } from './pages/perfil/perfil.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { NewPostComponent } from './new-post/new-post.component';
     TweetsComponent,
     HomeComponent,
     CommentsComponent,
-    NewPostComponent
+    NewPostComponent,
+    PerfilComponent
   ],
   imports: [
     BrowserModule,

@@ -8,24 +8,30 @@ import { CommentService } from '../services/comment.service'; // Asegúrate de q
   templateUrl: './tweets.component.html'
 })
 export class TweetsComponent implements OnInit {
+
+
   @Input() post!: any;
   newComment: string = '';
-  reactionCounts: { [key: string]: number } = {};
-  clickedReaction: string | null = null;
+reactionCounts: { [key: string]: number } = {};
+userReaction: string | null = null;  // cuál tiene el usuario activo
+
+ngOnInit(): void {
+  this.cargarReacciones();
+  this.cargarReaccionDelUsuario();
+}
+
+
 
   constructor(
     private http: HttpClient,
-    private commentService: CommentService  // Inyectamos el servicio de comentarios
+    private commentService: CommentService
   ) {}
 
-  ngOnInit(): void {
-    this.cargarReacciones();
-  }
 
 enviarComentario() {
   if (this.newComment.trim()) {
     const userId = localStorage.getItem('userId');
-    const postId = this.post.id; // Este post.id debe estar definido correctamente
+    const postId = this.post.id;
 
     if (!userId || !postId) {
       alert('Faltan datos requeridos para el comentario.');
@@ -38,7 +44,6 @@ enviarComentario() {
       postId: postId
     }).subscribe({
       next: (response) => {
-        // Una vez el comentario sea creado en el backend, agregarlo a la lista
         if (!this.post.comments) {
           this.post.comments = [];
         }
@@ -48,7 +53,7 @@ enviarComentario() {
           createdAt: new Date()
         });
 
-        this.newComment = ''; // Limpiar el campo de texto
+        this.newComment = '';
       },
       error: (err) => {
         console.error('Error al crear el comentario:', err);
@@ -58,48 +63,61 @@ enviarComentario() {
   }
 }
 
-  cargarReacciones(): void {
-    this.http.get<{ [key: string]: number }>(
-      `${environment.apiUrl}/posts/${this.post.id}/reactions/count`
-    ).subscribe({
-      next: (data) => this.reactionCounts = data,
-      error: (err) => console.error('Error al cargar conteos:', err)
-    });
-  }
+cargarReacciones(): void {
+  this.http.get<{ [key: string]: number }>(
+    `${environment.apiUrl}/posts/${this.post.id}/reactions/count`
+  ).subscribe({
+    next: (data) => this.reactionCounts = data,
+    error: (err) => console.error('Error al cargar conteos:', err)
+  });
+}
+
+cargarReaccionDelUsuario(): void {
+  const userId = localStorage.getItem('userId');
+  if (!userId) return;
+
+  this.http.get<{ reaction: string | null }>(
+    `${environment.apiUrl}/reactions/user?userId=${userId}&postId=${this.post.id}`
+  ).subscribe({
+    next: (data) => this.userReaction = data.reaction,
+    error: (err) => console.error('Error al obtener reacción del usuario:', err)
+  });
+}
 
 reaccionar(postId: number, tipo: string): void {
-  const username = localStorage.getItem('username');
-  if (!username) {
+  const userId = localStorage.getItem('userId');
+  if (!userId) {
     alert('Inicia sesión para reaccionar');
     return;
   }
 
-  // Verificar si ya ha reaccionado al mismo tipo
-  if (this.clickedReaction === tipo) {
-    // Si ya está marcada, eliminar la reacción
-    this.clickedReaction = null;
-    this.reactionCounts[tipo]--;  // Decrementar el contador
+  const yaTiene = this.userReaction === tipo;
+
+  if (yaTiene) {
+    this.reactionCounts[tipo]--;
+    this.userReaction = null;
   } else {
-    // Si no está marcada, agregar la reacción
-    this.clickedReaction = tipo;
-    this.reactionCounts[tipo] = (this.reactionCounts[tipo] || 0) + 1;  // Incrementar el contador
+    if (this.userReaction) {
+      this.reactionCounts[this.userReaction]--;
+    }
+    this.reactionCounts[tipo] = (this.reactionCounts[tipo] || 0) + 1;
+    this.userReaction = tipo;
   }
 
-  // Enviar al backend
-  this.http.post(`${environment.apiUrl}/posts/${postId}/reactions`, {
-    username: username,
-    reaction: tipo
-  }).subscribe({
-    next: () => {
-      // Opcional: recargar desde backend si quieres exactitud
-      // this.cargarReacciones();
+  console.log("REACCION POST", {
+    userId,
+    reaction: tipo,
+    postId
+  });
 
-      // Quitar animación después de un pequeño delay
-      setTimeout(() => this.clickedReaction = null, 500);
-    },
+  this.http.post(`${environment.apiUrl}/reactions/`, {
+    userId,
+    reaction: tipo,
+    postId
+  }).subscribe({
+    next: () => {},
     error: (err: any) => console.error('Error al reaccionar:', err)
   });
 }
-
 
 }

@@ -7,22 +7,27 @@
   </div>
 
  <p class="posted-by">Publicado por: {{ post.user?.username }}</p>
-
+<p class="posted-at">Fecha: {{ post.createdAt | date: 'short' }}</p>
   <div class="comment-section">
     <h4>Comentarios</h4>
-    <div *ngFor="let comment of post.comments" class="comment-bubble">
-      {{ comment.content }}
-    </div>
+<div *ngFor="let comment of post.comments" class="comment-box">
+  <p class="comment-author">{{ comment.user?.username || 'Anónimo' }}</p>
+  <p class="comment-content">{{ comment.content }}</p>
+</div>
+
     <textarea [(ngModel)]="newComment" class="comment-input" placeholder="Escribe un comentario..."></textarea>
     <button (click)="enviarComentario()">Enviar</button>
   </div>
 
-  <div class="reactions-bar">
-    <div class="reaction-item" *ngFor="let tipo of ['LIKE', 'LOVE', 'XDDD', 'WAOS', 'TITE', 'EWWW']"
-         [class.clicked]="clickedReaction === tipo">
-      <img [src]="'assets/reactions/' + tipo + '.png'" [alt]="tipo"
-           class="reaction-icon" (click)="reaccionar(post.id, tipo)" />
-      <span>{{ reactionCounts[tipo] || 0 }}</span>
-    </div>
+ <div class="reactions-bar">
+  <div class="reaction-item"
+         *ngFor="let tipo of ['LIKE', 'LOVE', 'NOJAO', 'WAO', 'TITE', 'XDDD']"
+       [class.clicked]="userReaction === tipo">
+    <img [src]="'assets/reactions/' + tipo + '.png'" [alt]="tipo"
+         class="reaction-icon" (click)="reaccionar(post.id, tipo)" />
+    <span>{{ reactionCounts[tipo] || 0 }}</span>
   </div>
+</div>
+
+ 
 </div>

@@ -1,0 +1,9 @@
+<div class="profile-container">
+  <h2>Mi perfil</h2>
+  <img *ngIf="user.imageUrl" [src]="user.imageUrl" alt="Foto de perfil" class="profile-image" />
+  <p><strong>Nombre:</strong> {{ user.username }}</p>
+  <p><strong>Correo:</strong> {{ user.email }}</p>
+
+  <input type="file" (change)="onFileSelected($event)" />
+  <button (click)="subirFoto()">Cambiar foto</button>
+</div>

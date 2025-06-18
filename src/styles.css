@@ -114,3 +114,8 @@ html, body {
   100% { transform: scale(1); }
 }
 
+
+.posted-at {
+  font-size: 0.85em;
+  color: gray;
+}

@@ -1,0 +1,113 @@
+/* Fondo general con gradiente animado */
+body, html {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+  font-family: 'Segoe UI', sans-serif;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Contenedor de página */
+:host ::ng-deep .main-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* --- BARRA LATERAL --- */
+nav {
+  width: 250px;
+  background-color: #111;
+  padding: 2rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  box-shadow: 0 0 20px rgba(0,255,255,0.1);
+}
+
+nav button {
+  background: none;
+  border: none;
+  color: #ccc;
+  text-align: left;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+nav button::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 5px;
+  background: transparent;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+nav button:hover {
+  color: #00ffff;
+  font-weight: bold;
+  transform: translateX(5px);
+}
+
+nav button:hover::before {
+  background: #00ffff;
+  box-shadow: 0 0 8px #00ffff;
+}
+
+nav button:last-child {
+  color: #ff4c4c;
+}
+
+nav button:last-child:hover {
+  color: #ff1f1f;
+}
+
+/* --- CONTENIDO --- */
+.content-area {
+  margin-left: 270px;
+  padding: 2rem 3rem;
+  height: 100vh;
+  overflow-y: auto;
+  color: white;
+}
+
+/* Encabezado animado */
+.content-area h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  animation: glowText 2s ease-in-out infinite alternate;
+}
+
+/* Animación de brillo del título */
+@keyframes glowText {
+  from {
+    text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+  }
+  to {
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+  }
+}
+
+/* Scroll personalizado */
+.content-area::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content-area::-webkit-scrollbar-track {
+  background: #222;
+}
+
+.content-area::-webkit-scrollbar-thumb {
+  background-color: #00ffff;
+  border-radius: 5px;
+}

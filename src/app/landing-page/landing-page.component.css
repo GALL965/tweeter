@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap');
+
+/* Fondo con imagen oscurecida + overlay */
+.landing-container {
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+              url('https://rvideos1.memedroid.com/videos/UPLOADED18/62dafbd780c44.webp') no-repeat center center fixed;
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 60px; /* espacio para la barra superior */
+  font-family: 'Ubuntu', sans-serif;
+  text-align: center;
+  color: white;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+/* Animación suave */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Título */
+.landing-content h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px #00ffff70;
+}
+
+/* Descripción */
+.landing-content p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+.landing-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: linear-gradient(to right, #0f0f0f, #1a1a1a);
+  padding: 1rem 2rem;
+  z-index: 10;
+  font-family: 'Ubuntu', sans-serif;
+  box-shadow: 0 2px 15px rgba(0,255,255,0.1);
+
+  display: flex; /* <-- Mueve flex aquí */
+  justify-content: space-between;
+  align-items: center;
+}
+/* Logo */
+.landing-header .logo {
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: bold;
+  text-shadow: 0 0 8px #00ffff80;
+}
+
+.login-button {
+  background: linear-gradient(90deg, #00ffff, #0088ff);
+  padding: 8px 20px;
+  border-radius: 25px;
+  color: #000;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 0 10px #00ffff80;
+
+  /* 🚨 Esto es lo importante */
+  margin-right: 40px;
+}
+
+
+.login-button:hover {
+  filter: brightness(1.2);
+  box-shadow: 0 0 20px #00ffffcc;
+}
